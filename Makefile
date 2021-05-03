@@ -6,7 +6,6 @@ BAD_LOG := bad_log.txt
 REQUESTS := requests.csv
 MONITOR := cart_monitor.py
 TEST := cartctl_test.py
-AUTOMATA_DIR := automata
 AUTOMATA = automaty.pdf
 
 
@@ -30,12 +29,10 @@ $(LOG): $(REQUESTS)
 .PHONY: pack
 pack: $(PACK)
 
-$(PACK): $(MONITOR) $(REQUESTS)
-	cp $(AUTOMATA_DIR)/$(AUTOMATA) .
-	zip -9 $@ $^ $(AUTOMATA)
-	rm $(AUTOMATA)
+$(PACK): $(MONITOR) $(REQUESTS) $(AUTOMATA)
+	zip -9 $@ $^
 
 
 .PHONY: clean
 clean:
-	rm -rf $(PACK) $(LOG) $(AUTOMATA) __pycache__/
+	rm -rf $(PACK) $(LOG) __pycache__/

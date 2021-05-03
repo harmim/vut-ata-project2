@@ -8,8 +8,10 @@ Track = namedtuple('Track', ['src', 'dst', 'cost'])
 
 Pcost = namedtuple('PathCost', ['path', 'cost'])
 
+
 def ucs(tracks, src, dst):
-    "unified cost search for path finding"
+    """unified cost search for path finding"""
+
     def min_idx(openset):
         minidx = 0
         i = 1
@@ -48,8 +50,10 @@ def ucs(tracks, src, dst):
             new_pc = Pcost(pc.path + [track], pc.cost + track.cost)
             openset.append(new_pc)
 
+
 class Tracks:
-    "mapped tracks"
+    """mapped tracks"""
+
     def __init__(self, tracks):
         # create track map: src -> (src, dst, delay)
         self.tracks = {}
@@ -67,25 +71,15 @@ class Tracks:
         return ucs(self.tracks, src, dst)
 
     def stations(self):
-        "Return set of stations. Read only."
+        """Return set of stations. Read only."""
         return self.tracks.keys()
-    
+
     def export(self, filename: str):
-        "Exports map of tracks to Graphviz"
+        """Exports map of tracks to Graphviz"""
         with open(filename, "w") as output:
             output.write("digraph track {\n")
             for tracks in self.tracks.values():
                 for track in tracks:
-                    output.write('  %s -> %s [label="%s"];\n' % \
-                        (track.src, track.dst, track.cost))
+                    output.write('  %s -> %s [label="%s"];\n' %
+                                 (track.src, track.dst, track.cost))
             output.write('}\n')
-
-#MILL_TRACKS = [
-#        Track('A', 'B', 20),
-#        Track('B', 'C', 20),
-#        Track('C', 'D', 20),
-#        Track('D', 'A', 20),
-#        Track('B', 'A', 30),
-#        ]
-#
-#MILL = Tracks(MILL_TRACKS)
